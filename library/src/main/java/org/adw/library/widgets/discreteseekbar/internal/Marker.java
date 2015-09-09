@@ -34,7 +34,6 @@ import android.widget.TextView;
 import org.adw.library.widgets.discreteseekbar.R;
 import org.adw.library.widgets.discreteseekbar.internal.compat.SeekBarCompat;
 import org.adw.library.widgets.discreteseekbar.internal.drawable.MarkerDrawable;
-import org.adw.library.widgets.discreteseekbar.internal.drawable.ThumbDrawable;
 
 /**
  * {@link android.view.ViewGroup} to be used as the real indicator.
@@ -50,10 +49,11 @@ public class Marker extends ViewGroup implements MarkerDrawable.MarkerAnimationL
     private static final int PADDING_DP = 4;
     private static final int ELEVATION_DP = 8;
     private static final int SEPARATION_DP = 30;
+    private int mThumbSize;
     //The TextView to show the info
     private TextView mNumber;
     //The max width of this View
-    private int mWidth;
+    private int mWidth, mColor;
     //some distance between the thumb and our bubble marker.
     //This will be added to our measured height
     private int mSeparation;
@@ -98,14 +98,15 @@ public class Marker extends ViewGroup implements MarkerDrawable.MarkerAnimationL
         resetSizes(maxValue);
 
         mSeparation = (int) (SEPARATION_DP * displayMetrics.density);
-        int thumbSize = (int) (ThumbDrawable.DEFAULT_SIZE_DP * displayMetrics.density);
+        mThumbSize = a.getDimensionPixelSize(R.styleable.DiscreteSeekBar_dsb_thumbSize, 3);
+        int thumbSize = (int) (mThumbSize * displayMetrics.density);
         ColorStateList color = a.getColorStateList(R.styleable.DiscreteSeekBar_dsb_indicatorColor);
         mMarkerDrawable = new MarkerDrawable(color, thumbSize);
         mMarkerDrawable.setCallback(this);
         mMarkerDrawable.setMarkerListener(this);
         mMarkerDrawable.setExternalOffset(padding);
 
-        //Elevation for anroid 5+
+        //Elevation for android 5+
         float elevation = a.getDimension(R.styleable.DiscreteSeekBar_dsb_indicatorElevation, ELEVATION_DP * displayMetrics.density);
         ViewCompat.setElevation(this, elevation);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -179,6 +180,10 @@ public class Marker extends ViewGroup implements MarkerDrawable.MarkerAnimationL
     public void setValue(CharSequence value) {
         mNumber.setText(value);
     }
+    public org.adw.library.widgets.discreteseekbar.internal.drawable.MarkerDrawable getDrawable() {
+        return mMarkerDrawable;
+    }
+
 
     public CharSequence getValue() {
         return mNumber.getText();
@@ -216,6 +221,12 @@ public class Marker extends ViewGroup implements MarkerDrawable.MarkerAnimationL
         mMarkerDrawable.stop();
     }
 
+    
+    public void setColors(int startColor) {
+        mMarkerDrawable.setColors(startColor);
+        mColor = startColor;
+
+    }
     public void setColors(int startColor, int endColor) {
         mMarkerDrawable.setColors(startColor, endColor);
     }
