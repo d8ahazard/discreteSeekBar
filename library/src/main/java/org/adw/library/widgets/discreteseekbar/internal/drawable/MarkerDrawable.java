@@ -83,8 +83,18 @@ public class MarkerDrawable extends StateDrawable implements Animatable {
     }
 
     /**
+     * Pass a single color when setting manually so it can be
+     * animated or set via the value of itself.
+     * @param startColor Color used for the seek thumb
+     */
+    public void setColors(int startColor) {
+        mStartColor = startColor;
+		mEndColor = 0;
+        invalidateSelf();
+    }
+/**
      * The two colors that will be used for the seek thumb.
-     *
+     * This method is used internally by the app.
      * @param startColor Color used for the seek thumb
      * @param endColor   Color used for popup indicator
      */
@@ -97,8 +107,13 @@ public class MarkerDrawable extends StateDrawable implements Animatable {
     void doDraw(Canvas canvas, Paint paint) {
         if (!mPath.isEmpty()) {
             paint.setStyle(Paint.Style.FILL);
-            int color = blendColors(mStartColor, mEndColor, mCurrentScale);
-            paint.setColor(color);
+            if (mEndColor == 0) {
+                paint.setColor(mStartColor);
+            } else {
+                int color = blendColors(mStartColor, mEndColor, mCurrentScale);
+                paint.setColor(color);
+
+                }
             canvas.drawPath(mPath, paint);
         }
     }
