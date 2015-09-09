@@ -111,6 +111,8 @@ public abstract class StateDrawable extends Drawable {
         return mAlpha;
     }
 
+    public int getColor() { return mCurrentColor; }
+
     @Override
     public void setColorFilter(ColorFilter cf) {
         mPaint.setColorFilter(cf);
