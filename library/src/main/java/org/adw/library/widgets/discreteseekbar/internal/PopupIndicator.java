@@ -57,6 +57,7 @@ public class PopupIndicator {
     //... phew!
     private MarkerDrawable.MarkerAnimationListener mListener;
     private int[] mDrawingLocation = new int[2];
+    private int mColor;
     Point screenSize = new Point();
 
     public PopupIndicator(Context context, AttributeSet attrs, int defStyleAttr, String maxValue) {
@@ -91,6 +92,10 @@ public class PopupIndicator {
         mPopupView.mMarker.setValue(value);
     }
 
+    public org.adw.library.widgets.discreteseekbar.internal.drawable.MarkerDrawable getMarkerDrawable() {
+        return mPopupView.mMarker.mMarkerDrawable;
+    }
+
     public boolean isShowing() {
         return mShowing;
     }
@@ -121,7 +126,10 @@ public class PopupIndicator {
         translateViewIntoPosition(x);
     }
 
-    public void setColors(int startColor, int endColor) {
+    public void setColors(int startColor) {
+        mPopupView.setColors(startColor);
+    }
+	public void setColors(int startColor, int endColor) {
         mPopupView.setColors(startColor, endColor);
     }
 
@@ -260,6 +268,9 @@ public class PopupIndicator {
             }
         }
 
+        public void setColors(int startColor) {
+            mMarker.setColors(startColor);
+        }
         public void setColors(int startColor, int endColor) {
             mMarker.setColors(startColor, endColor);
         }
